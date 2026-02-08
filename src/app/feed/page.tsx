@@ -72,9 +72,7 @@ export default function Home() {
         .sort((a, b) => b.totalLikes - a.totalLikes); // Sort by total likes descending
 
     return (
-        <div className="flex min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 
-                    dark:from-slate-950 dark:via-slate-900 dark:to-slate-950
-                    font-sans text-slate-900 dark:text-slate-100">
+        <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 font-sans text-slate-900 dark:text-slate-100">
             <Sidebar
                 categories={categories}
                 selectedCategory={activeCategory}
@@ -82,7 +80,6 @@ export default function Home() {
                 isOpen={isSidebarOpen}
                 onClose={() => setIsSidebarOpen(false)}
             />
-            
 
             <div className="flex-1 flex flex-col min-h-screen w-full">
                 <Navbar
@@ -93,31 +90,31 @@ export default function Home() {
                     onOpenSidebar={() => setIsSidebarOpen(true)}
                 />
 
-                <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
-                    <div className="max-w-7xl mx-auto">
+                <main className="flex-1 px-4 sm:px-6 lg:px-8 py-8 md:py-12 overflow-y-auto">
+                    <div className="max-w-[1600px] mx-auto">
                         {/* Header */}
-                        <div className="mb-8 space-y-3">
-                            <div className="flex items-center gap-3">
-                                <h2 className="text-4xl font-bold gradient-text">
-                                    {activeCategory === 'All' ? 'Discover Tools' : activeCategory}
-                                </h2>
-                                {activeCategory !== 'All' && (
-                                    <span className="px-3 py-1 rounded-lg bg-primary-100 dark:bg-primary-950/30 
-                                 text-primary-700 dark:text-primary-400 text-sm font-semibold">
-                                        {filteredTools.length}
-                                    </span>
-                                )}
-                            </div>
-                            <p className="text-slate-600 dark:text-slate-400 text-lg">
+                        <div className="mb-10 space-y-4 max-w-2xl">
+                            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">
+                                {activeCategory === 'All' ? 'Discover Tools' : activeCategory}
+                            </h2>
+                            <p className="text-slate-500 dark:text-slate-400 text-lg leading-relaxed">
                                 {activeCategory === 'All'
-                                    ? 'Browse our curated collection of the best tools for developers and designers'
-                                    : `Explore ${filteredTools.length} amazing ${activeCategory.toLowerCase()} tools`
+                                    ? 'Curated collection of the best developer and design tools.'
+                                    : `Explore ${filteredTools.length} ${activeCategory.toLowerCase()} tools.`
                                 }
                             </p>
+
+                            {activeCategory !== 'All' && (
+                                <div className="pt-2">
+                                    <span className="inline-flex items-center px-3 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm font-medium">
+                                        {filteredTools.length} results
+                                    </span>
+                                </div>
+                            )}
                         </div>
 
                         {filteredTools.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 lg:gap-8">
                                 {filteredTools.map((tool) => (
                                     <ToolsCard
                                         key={tool.id}
@@ -131,41 +128,27 @@ export default function Home() {
                                 ))}
                             </div>
                         ) : (
-                            <div className="flex flex-col items-center justify-center py-24 text-center animate-[fadeIn_0.3s_ease-out]">
-                                <div className="relative mb-6">
-                                    <div className="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-electric-500/20 blur-3xl rounded-full" />
-                                    <div className="relative bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 
-                                rounded-3xl p-8 shadow-xl">
-                                        <Search className="w-16 h-16 text-slate-400 dark:text-slate-500" strokeWidth={1.5} />
-                                    </div>
+                            <div className="flex flex-col items-center justify-center py-24 text-center">
+                                <div className="bg-slate-100 dark:bg-slate-900 rounded-full p-6 mb-4">
+                                    <Search className="w-8 h-8 text-slate-400" />
                                 </div>
-                                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+                                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-1">
                                     No tools found
                                 </h3>
-                                <p className="text-slate-600 dark:text-slate-400 max-w-md mx-auto mb-6 leading-relaxed">
-                                    We couldn't find any tools matching your search or category. Try adjusting your filters or search terms.
+                                <p className="text-slate-500 dark:text-slate-400 max-w-sm mx-auto mb-6">
+                                    We couldn't find anything matching your criteria.
                                 </p>
                                 <button
                                     onClick={() => {
                                         setActiveCategory('All');
                                         setSearchQuery('');
                                     }}
-                                    className="px-6 py-3 bg-gradient-to-r from-primary-600 to-electric-500 
-                           hover:from-primary-700 hover:to-electric-600
-                           text-white rounded-xl font-semibold 
-                           shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30
-                           transition-all duration-200 active:scale-95"
+                                    className="px-4 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
                                 >
-                                    Reset Filters
+                                    Clear Filters
                                 </button>
                             </div>
                         )}
-                    </div>
-
-                    <div className="max-w-7xl mx-auto mt-20 mb-10 border-t border-gray-200 dark:border-gray-800 pt-10">
-                        <h2 className="text-3xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400">
-                            Featured Companies
-                        </h2>
                     </div>
                 </main>
             </div>

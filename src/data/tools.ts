@@ -9,6 +9,7 @@ export interface Tool {
 }
 
 export const tools: Tool[] = [
+  // Originally added
   {
     id: '1',
     title: 'VS Code',
@@ -81,7 +82,7 @@ export const tools: Tool[] = [
     category: 'Development',
     initialLikes: 920,
   },
-    {
+  {
     id: '9',
     title: 'Dribbble',
     description: 'The leading destination to find & showcase creative work and home to the world\'s best design professionals.',
@@ -90,13 +91,205 @@ export const tools: Tool[] = [
     category: 'Design',
     initialLikes: 750,
   },
-    {
+  {
     id: '10',
     title: 'Linear',
     description: 'The issue tracking tool you\'ll enjoy using.',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/e/e6/Linear_logo.svg', // Placeholder valid SVG link to avoid broken image if possible, but using wiki for now
+    image: 'https://upload.wikimedia.org/wikipedia/commons/e/e6/Linear_logo.svg',
     link: 'https://linear.app/',
     category: 'Productivity',
     initialLikes: 600,
   },
+
+  // New Additions
+
+  // Development Frameworks & Libraries
+  {
+    id: '11',
+    title: 'React',
+    description: 'A JavaScript library for building user interfaces.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg',
+    link: 'https://react.dev/',
+    category: 'Development',
+    initialLikes: 2100,
+  },
+  {
+    id: '12',
+    title: 'Vue.js',
+    description: 'The Progressive JavaScript Framework.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg',
+    link: 'https://vuejs.org/',
+    category: 'Development',
+    initialLikes: 1750,
+  },
+  {
+    id: '13',
+    title: 'Angular',
+    description: 'The modern web developer\'s platform.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/c/cf/Angular_full_color_logo.svg',
+    link: 'https://angular.io/',
+    category: 'Development',
+    initialLikes: 1600,
+  },
+  {
+    id: '14',
+    title: 'Svelte',
+    description: 'Cybernetically enhanced web apps.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/1/1b/Svelte_Logo.svg',
+    link: 'https://svelte.dev/',
+    category: 'Development',
+    initialLikes: 1450,
+  },
+  {
+    id: '15',
+    title: 'Next.js',
+    description: 'The React Framework for the Web.',
+    image: 'https://assets.vercel.com/image/upload/v1662130559/nextjs/Icon_light_background.png',
+    link: 'https://nextjs.org/',
+    category: 'Development',
+    initialLikes: 2000,
+  },
+  {
+    id: '16',
+    title: 'Bootstrap',
+    description: 'Powerful, extensible, and feature-packed frontend toolkit.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/b/b2/Bootstrap_logo.svg',
+    link: 'https://getbootstrap.com/',
+    category: 'Development',
+    initialLikes: 1300,
+  },
+
+  // Design & Prototyping
+  {
+    id: '17',
+    title: 'Sketch',
+    description: 'The all-in-one platform for digital design.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/5/59/Sketch_Logo.svg',
+    link: 'https://www.sketch.com/',
+    category: 'Design',
+    initialLikes: 890,
+  },
+  {
+    id: '18',
+    title: 'Adobe XD',
+    description: 'Vector-based user experience design tool for web apps and mobile apps.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/c/c2/Adobe_XD_CC_icon.svg',
+    link: 'https://helpx.adobe.com/support/xd.html',
+    category: 'Design',
+    initialLikes: 780,
+  },
+  {
+    id: '19',
+    title: 'InVision',
+    description: ' The digital product design platform.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/8/86/InVision_logo.svg',
+    link: 'https://www.invisionapp.com/',
+    category: 'Design',
+    initialLikes: 650,
+  },
+
+  // Developer Tools & IDEs
+  {
+    id: '20',
+    title: 'Sublime Text',
+    description: 'A sophisticated text editor for code, markup and prose.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/7/75/Sublime_Text_Logo.svg',
+    link: 'https://www.sublimetext.com/',
+    category: 'Development',
+    initialLikes: 1150,
+  },
+  {
+    id: '21',
+    title: 'Docker',
+    description: 'Build, Share, and Run Any App, Anywhere.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/4/4e/Docker_%28container_engine%29_logo.svg',
+    link: 'https://www.docker.com/',
+    category: 'Development',
+    initialLikes: 1950,
+  },
+  {
+    id: '22',
+    title: 'Kubernetes',
+    description: 'Automated container deployment, scaling, and management.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/3/39/Kubernetes_logo_without_workmark.svg',
+    link: 'https://kubernetes.io/',
+    category: 'Development',
+    initialLikes: 1850,
+  },
+  {
+    id: '23',
+    title: 'Postman',
+    description: 'An API platform for building and using APIs.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/c/c2/Postman_%28software%29.png',
+    link: 'https://www.postman.com/',
+    category: 'Development',
+    initialLikes: 1420,
+  },
+
+  // Productivity & Collaboration
+  {
+    id: '24',
+    title: 'Slack',
+    description: 'A messaging app for business that connects people to the information they need.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/d/d5/Slack_icon_2019.svg',
+    link: 'https://slack.com/',
+    category: 'Productivity',
+    initialLikes: 1600,
+  },
+  {
+    id: '25',
+    title: 'Trello',
+    description: 'Collaborate, manage projects, and reach new productivity peaks.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/7/7a/Trello-logo-blue.svg',
+    link: 'https://trello.com/',
+    category: 'Productivity',
+    initialLikes: 980,
+  },
+  {
+    id: '26',
+    title: 'Jira',
+    description: 'The #1 software development tool used by agile teams.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/8/8a/Jira_Logo.svg',
+    link: 'https://www.atlassian.com/software/jira',
+    category: 'Productivity',
+    initialLikes: 1350,
+  },
+
+  // AI & Testing
+  {
+    id: '27',
+    title: 'GitHub Copilot',
+    description: 'Your AI pair programmer.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/2/29/GitHub_Copilot_logo.svg',
+    link: 'https://github.com/features/copilot',
+    category: 'AI',
+    initialLikes: 2200,
+  },
+  {
+    id: '28',
+    title: 'Selenium',
+    description: 'Automates browsers. That\'s it!',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/d/d5/Selenium_Logo.png',
+    link: 'https://www.selenium.dev/',
+    category: 'Development',
+    initialLikes: 820,
+  },
+  {
+    id: '29',
+    title: 'Jest',
+    description: 'Delightful JavaScript Testing.',
+    image: 'https://jestjs.io/img/jest.png',
+    link: 'https://jestjs.io/',
+    category: 'Development',
+    initialLikes: 1050,
+  },
+  {
+    id: '30',
+    title: 'Cypress',
+    description: 'Fast, easy and reliable testing for anything that runs in a browser.',
+    image: 'https://assets.stickpng.com/images/5847f40ecef1014c0b5e488a.png', // Fallback or clearbit might work better but this is common
+    link: 'https://www.cypress.io/',
+    category: 'Development',
+    initialLikes: 1180,
+  }
 ];
