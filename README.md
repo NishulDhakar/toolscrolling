@@ -1,4 +1,4 @@
-<img width="1920" height="1440" alt="image" src="https://github.com/user-attachments/assets/b14e3e90-5250-45db-8a93-1e69d9c54dfa" /># ToolScrolling
+# ToolScrolling
 
 A curated platform for discovering developer and design tools with search, filtering, likes, and an admin panel.
 
