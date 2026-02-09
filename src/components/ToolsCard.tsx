@@ -78,7 +78,7 @@ export default function ToolsCard({
                 {/* Footer Actions */}
                 <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
                     <div className="flex items-center gap-2">
-                        <button
+                        {/* <button
                             onClick={(e) => {
                                 e.stopPropagation();
                                 e.preventDefault();
@@ -92,7 +92,7 @@ export default function ToolsCard({
                         >
                             <Heart size={16} className={isLiked ? "fill-current" : ""} />
                             <span>{likesCount}</span>
-                        </button>
+                        </button> */}
 
                         <button
                             onClick={(e) => {
