@@ -56,12 +56,12 @@ export default function LandingPage() {
               {/* Glass Button */}
               <span
                 className="
-                  relative px-8 py-3 rounded-full text-sm font-medium
+                  relative px-30 py-4 rounded-full text-md font-bold
                   text-white backdrop-blur-xl
-                  bg-white/10 border border-white/20
+                  bg-white/5 border border-white/20
                   shadow-[0_8px_32px_rgba(0,0,0,0.25)]
                   transition-all duration-300
-                  hover:bg-white/20
+                  hover:bg-white/10
                   active:scale-[0.97]
                 "
               >

@@ -12,8 +12,8 @@ interface Tool {
     image: string;
     link: string;
     category: string;
-    initialLikes: number;
 }
+
 
 interface ToolsCardProps {
     tool: Tool;
@@ -34,11 +34,11 @@ export default function ToolsCard({
 }: ToolsCardProps) {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
-            whileHover={{ y: -5 }}
+
             transition={{ duration: 0.3 }}
-            className="group relative bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:shadow-primary-500/10 dark:hover:shadow-primary-500/5 transition-all duration-300"
+            className="group relative bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm  dark:hover:shadow-primary-500/5 transition-all duration-300"
         >
             {/* Hover Gradient Border */}
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary-500 to-electric-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 p-[1px]" />

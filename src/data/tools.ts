@@ -5,8 +5,9 @@ export interface Tool {
   image: string;
   link: string;
   category: 'Development' | 'Design' | 'Productivity' | 'AI' | 'Other';
-  initialLikes: number;
+  initialLikes?: number; // Deprecated: kept for backward compatibility with existing data
 }
+
 
 export const tools: Tool[] = [
   // Originally added

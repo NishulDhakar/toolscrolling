@@ -2,27 +2,41 @@
 
 import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
-import { tools } from '@/data/tools';
+import { getAllTools } from '@/lib/toolsService';
+import { getLikeCount, toggleLikeCount } from '@/lib/likeService';
 import Sidebar from '@/components/Sidebar';
 import Navbar from '@/components/Navbar';
 import ToolsCard from '@/components/ToolsCard';
 
 export default function Home() {
+    const [tools, setTools] = useState<any[]>([]);
     const [activeCategory, setActiveCategory] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
     const [likedTools, setLikedTools] = useState<string[]>([]);
     const [savedTools, setSavedTools] = useState<string[]>([]);
+    const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
     const [isLoaded, setIsLoaded] = useState(false);
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    // Load from local storage on mount
+    // Load tools and preferences from storage on mount
     useEffect(() => {
+        const allTools = getAllTools();
+        setTools(allTools);
+
         const savedLikes = localStorage.getItem('likedTools');
         const savedSaves = localStorage.getItem('savedTools');
 
         if (savedLikes) setLikedTools(JSON.parse(savedLikes));
         if (savedSaves) setSavedTools(JSON.parse(savedSaves));
+
+        // Load like counts for all tools
+        const counts: Record<string, number> = {};
+        allTools.forEach(tool => {
+            counts[tool.id] = getLikeCount(tool.id);
+        });
+        setLikeCounts(counts);
+
         setIsLoaded(true);
     }, []);
 
@@ -40,8 +54,15 @@ export default function Home() {
     }, [savedTools, isLoaded]);
 
     const toggleLike = (id: string) => {
+        const isCurrentlyLiked = likedTools.includes(id);
+
+        // Update like count
+        const newCount = toggleLikeCount(id, isCurrentlyLiked);
+        setLikeCounts(prev => ({ ...prev, [id]: newCount }));
+
+        // Update liked tools list
         setLikedTools(prev =>
-            prev.includes(id) ? prev.filter(toolId => toolId !== id) : [...prev, id]
+            isCurrentlyLiked ? prev.filter(toolId => toolId !== id) : [...prev, id]
         );
     };
 
@@ -66,8 +87,7 @@ export default function Home() {
             ...tool,
             isLiked: likedTools.includes(tool.id),
             isSaved: savedTools.includes(tool.id),
-            // Calculate total likes: initial + 1 if user liked
-            totalLikes: tool.initialLikes + (likedTools.includes(tool.id) ? 1 : 0)
+            totalLikes: likeCounts[tool.id] || 0
         }))
         .sort((a, b) => b.totalLikes - a.totalLikes); // Sort by total likes descending
 

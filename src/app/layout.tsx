@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
-import LightPillar from "@/components/LightPillar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,8 +28,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased relative overflow-x-hidden`}
       >
+        <Script
+          src="https://cloud.umami.is/script.js"
+          data-website-id="5558b0e4-fbcd-46be-9a77-fe5fa183798c"
+          strategy="afterInteractive"
+        />
 
-        {/* App content */}
         {children}
       </body>
     </html>

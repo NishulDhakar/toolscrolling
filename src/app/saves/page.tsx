@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { tools } from '../../data/tools';
+import { getAllTools } from '@/lib/toolsService';
+import { getLikeCount, toggleLikeCount } from '@/lib/likeService';
 import ToolCard from '../../components/ToolsCard';
 import Sidebar from '../../components/Sidebar';
 import Navbar from '../../components/Navbar';
@@ -9,18 +10,31 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
 export default function SavesPage() {
+    const [tools, setTools] = useState<any[]>([]);
     const [activeCategory, setActiveCategory] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
     const [likedTools, setLikedTools] = useState<string[]>([]);
     const [savedTools, setSavedTools] = useState<string[]>([]);
+    const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
+        const allTools = getAllTools();
+        setTools(allTools);
+
         const savedLikes = localStorage.getItem('likedTools');
         const savedSaves = localStorage.getItem('savedTools');
 
         if (savedLikes) setLikedTools(JSON.parse(savedLikes));
         if (savedSaves) setSavedTools(JSON.parse(savedSaves));
+
+        // Load like counts for all tools
+        const counts: Record<string, number> = {};
+        allTools.forEach(tool => {
+            counts[tool.id] = getLikeCount(tool.id);
+        });
+        setLikeCounts(counts);
+
         setIsLoaded(true);
     }, []);
 
@@ -37,8 +51,15 @@ export default function SavesPage() {
     }, [savedTools, isLoaded]);
 
     const toggleLike = (id: string) => {
+        const isCurrentlyLiked = likedTools.includes(id);
+
+        // Update like count
+        const newCount = toggleLikeCount(id, isCurrentlyLiked);
+        setLikeCounts(prev => ({ ...prev, [id]: newCount }));
+
+        // Update liked tools list
         setLikedTools(prev =>
-            prev.includes(id) ? prev.filter(toolId => toolId !== id) : [...prev, id]
+            isCurrentlyLiked ? prev.filter(toolId => toolId !== id) : [...prev, id]
         );
     };
 
@@ -62,7 +83,7 @@ export default function SavesPage() {
             ...tool,
             isLiked: likedTools.includes(tool.id),
             isSaved: true,
-            totalLikes: tool.initialLikes + (likedTools.includes(tool.id) ? 1 : 0)
+            totalLikes: likeCounts[tool.id] || 0
         }));
 
     return (

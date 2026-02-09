@@ -1,6 +1,7 @@
 import React from 'react';
 import { LayoutGrid, Code, PenTool, Brain, Sparkles, Folder, Bookmark, X } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface SidebarProps {
     categories: string[];
@@ -55,8 +56,14 @@ const Sidebar: React.FC<SidebarProps> = ({
                     {/* Header Section */}
                     <div className="mb-8 px-3 flex items-center justify-between">
                         <Link href="/" className="flex items-center gap-2.5 group">
-                            <div className="w-8 h-8 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 flex items-center justify-center font-bold text-sm">
-                                TS
+                            <div className="w-10 h-10 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 flex items-center justify-center font-bold text-sm">
+                                   <Image
+                                                           src="/logo1.png"
+                                                           width={35}
+                                                           height={35}
+                                                           alt="logo"
+                                                           
+                                                       />    
                             </div>
                             <span className="text-base font-bold tracking-tight text-slate-900 dark:text-white">
                                 ToolScrolling

@@ -52,13 +52,6 @@ const Navbar: React.FC<NavbarProps> = ({
                             />
                         </div>
                     </div>
-
-                    {/* Right Actions */}
-                    <div className="flex items-center gap-2 sm:gap-4">
-                        <div className="hidden sm:flex items-center gap-4 text-sm font-medium text-slate-600 dark:text-slate-400">
-                            {/* Stats or other links could go here */}
-                        </div>
-                    </div>
                 </div>
             </div>
         </nav>
