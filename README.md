@@ -1,6 +1,9 @@
-# ToolScrolling
+<img width="1920" height="1440" alt="image" src="https://github.com/user-attachments/assets/b14e3e90-5250-45db-8a93-1e69d9c54dfa" /># ToolScrolling
 
 A curated platform for discovering developer and design tools with search, filtering, likes, and an admin panel.
+
+![116shots_so](https://github.com/user-attachments/assets/f9431912-d8c2-4877-89fe-f100b55824fd)
+
 
 ## Features
 
@@ -18,22 +21,11 @@ git clone https://github.com/NishulDhakar/toolscrolling.git
 cd toolscrolling
 npm install
 
-# Configure admin password
-echo "NEXT_PUBLIC_ADMIN_PASSWORD=your_password" > .env.local
-
 # Run development server
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
-
-## Admin Panel
-
-Access at `/admin` with the password set in `.env.local`
-
-- Add, edit, and delete custom tools
-- View tool statistics
-- Protected routes with session management
 
 ## Tech Stack
 
@@ -52,16 +44,6 @@ src/
 ├── data/            # Static tool data
 └── lib/             # Services (auth, likes, tools)
 ```
-
-## Deployment
-
-Deploy to Vercel or any Next.js-compatible platform. Set `NEXT_PUBLIC_ADMIN_PASSWORD` environment variable.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
-
-## License
-
-MIT
 
 ---
 
