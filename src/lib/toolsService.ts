@@ -171,13 +171,8 @@ export function validateTool(tool: Partial<Tool>): { valid: boolean; errors: str
         }
     }
 
-    if (!tool.category) {
+    if (!tool.category || tool.category.trim().length === 0) {
         errors.push('Category is required');
-    } else {
-        const validCategories = ['Development', 'Design', 'Productivity', 'AI', 'Other'];
-        if (!validCategories.includes(tool.category)) {
-            errors.push('Invalid category');
-        }
     }
 
     if (tool.initialLikes !== undefined) {

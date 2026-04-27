@@ -1,11 +1,11 @@
-const AUTH_KEY = 'adminAuthenticated';
+const AUTH_KEY = 'nishulAuthenticated';
 
 /**
- * Get admin password from environment variable
- * In production, set NEXT_PUBLIC_ADMIN_PASSWORD environment variable
+ * Get nishul password from environment variable
+ * In production, set NEXT_PUBLIC_nishul_PASSWORD environment variable
  */
-export function getAdminPassword(): string {
-    return process.env.NEXT_PUBLIC_ADMIN_PASSWORD || ''; // Default password for development
+export function getnishulPassword(): string {
+    return process.env.NEXT_PUBLIC_nishul_PASSWORD || ''; // Default password for development
 }
 
 /**
@@ -22,7 +22,7 @@ export function isAuthenticated(): boolean {
 export function authenticate(password: string): boolean {
     if (typeof window === 'undefined') return false;
 
-    const envPassword = getAdminPassword();
+    const envPassword = getnishulPassword();
 
     if (password === envPassword) {
         localStorage.setItem(AUTH_KEY, 'true');

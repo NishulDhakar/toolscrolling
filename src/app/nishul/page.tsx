@@ -4,24 +4,27 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAllTools, deleteTool, CustomTool } from '@/lib/toolsService';
 import { isAuthenticated, logout } from '@/lib/authService';
-import AdminToolCard from '@/components/AdminToolCard';
+import NishulToolCard from '@/components/AdminToolCard';
 import Link from 'next/link';
-import { Plus, Search, LayoutDashboard, LogOut } from 'lucide-react';
+import { Plus, Search, LayoutDashboard, LogOut, Inbox, BookOpen, Tag } from 'lucide-react';
+import { getSubmissions } from '@/lib/submissionService';
 
-export default function AdminPage() {
+export default function nishulPage() {
     const router = useRouter();
     const [tools, setTools] = useState<CustomTool[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [filterCategory, setFilterCategory] = useState('All');
     const [isLoaded, setIsLoaded] = useState(false);
+    const [pendingCount, setPendingCount] = useState(0);
 
     useEffect(() => {
         // Check authentication
         if (!isAuthenticated()) {
-            router.push('/admin/login');
+            router.push('/nishul/login');
             return;
         }
         loadTools();
+        setPendingCount(getSubmissions().filter(s => s.status === 'pending').length);
     }, [router]);
 
     const loadTools = () => {
@@ -71,7 +74,7 @@ export default function AdminPage() {
                                 </div>
                                 <div>
                                     <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-                                        Admin Panel
+                                        nishul Panel
                                     </h1>
                                     <p className="text-sm text-slate-600 dark:text-slate-400">
                                         Manage your tools collection
@@ -83,7 +86,7 @@ export default function AdminPage() {
                             <button
                                 onClick={() => {
                                     logout();
-                                    router.push('/admin/login');
+                                    router.push('/nishul/login');
                                 }}
                                 className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center gap-2"
                                 title="Logout"
@@ -92,13 +95,39 @@ export default function AdminPage() {
                                 <span className="hidden sm:inline">Logout</span>
                             </button>
                             <Link
+                                href="/nishul/submissions"
+                                className="relative px-4 py-2 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/50 rounded-lg font-medium hover:bg-amber-100 dark:hover:bg-amber-900/40 transition flex items-center gap-2"
+                            >
+                                <Inbox size={16} />
+                                <span className="hidden sm:inline">Submissions</span>
+                                {pendingCount > 0 && (
+                                    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                                        {pendingCount}
+                                    </span>
+                                )}
+                            </Link>
+                            <Link
+                                href="/nishul/categories"
+                                className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center gap-2"
+                            >
+                                <Tag size={16} />
+                                <span className="hidden sm:inline">Categories</span>
+                            </Link>
+                            <Link
+                                href="/nishul/blog"
+                                className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center gap-2"
+                            >
+                                <BookOpen size={16} />
+                                <span className="hidden sm:inline">Blog</span>
+                            </Link>
+                            <Link
                                 href="/feed"
                                 className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition"
                             >
                                 View Feed
                             </Link>
                             <Link
-                                href="/admin/add"
+                                href="/nishul/add"
                                 className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-pink-700 transition flex items-center gap-2 shadow-lg"
                             >
                                 <Plus size={18} />
@@ -190,7 +219,7 @@ export default function AdminPage() {
                 <div className="space-y-3">
                     {filteredTools.length > 0 ? (
                         filteredTools.map((tool) => (
-                            <AdminToolCard key={tool.id} tool={tool} onDelete={handleDelete} />
+                            <NishulToolCard key={tool.id} tool={tool} onDelete={handleDelete} />
                         ))
                     ) : (
                         <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-12 text-center">

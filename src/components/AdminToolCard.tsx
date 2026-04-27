@@ -5,12 +5,12 @@ import { CustomTool } from '@/lib/toolsService';
 import { Edit, Trash2, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
-interface AdminToolCardProps {
+interface NishulToolCardProps {
     tool: CustomTool;
     onDelete: (id: string) => void;
 }
 
-export default function AdminToolCard({ tool, onDelete }: AdminToolCardProps) {
+export default function NishulToolCard({ tool, onDelete }: NishulToolCardProps) {
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
 
@@ -72,7 +72,7 @@ export default function AdminToolCard({ tool, onDelete }: AdminToolCardProps) {
                     {/* Actions */}
                     <div className="flex flex-col gap-2">
                         <Link
-                            href={`/admin/edit/${tool.id}`}
+                            href={`/nishul/edit/${tool.id}`}
                             className="p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/40 transition"
                             title="Edit"
                         >

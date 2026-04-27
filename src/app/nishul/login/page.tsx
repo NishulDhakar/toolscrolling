@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { authenticate, isAuthenticated } from '@/lib/authService';
 import { Lock, Eye, EyeOff } from 'lucide-react';
 
-export default function AdminLoginPage() {
+export default function nishulLoginPage() {
     const router = useRouter();
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -15,7 +15,7 @@ export default function AdminLoginPage() {
     useEffect(() => {
         // Check if already authenticated
         if (isAuthenticated()) {
-            router.push('/admin');
+            router.push('/nishul');
             return;
         }
         setIsLoading(false);
@@ -27,7 +27,7 @@ export default function AdminLoginPage() {
 
         const success = authenticate(password);
         if (success) {
-            router.push('/admin');
+            router.push('/nishul');
         } else {
             setError('Incorrect password');
             setPassword('');
@@ -52,10 +52,10 @@ export default function AdminLoginPage() {
                             <Lock className="w-8 h-8 text-white" />
                         </div>
                         <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
-                            Admin Login
+                            nishul Login
                         </h1>
                         <p className="text-sm text-slate-600 dark:text-slate-400">
-                            Enter your password to access the admin panel
+                            Enter your password to access the nishul panel
                         </p>
                     </div>
 

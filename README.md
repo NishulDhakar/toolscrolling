@@ -1,6 +1,6 @@
 # ToolScrolling
 
-A curated platform for discovering developer and design tools with search, filtering, likes, and an admin panel.
+A curated platform for discovering developer and design tools with search, filtering, likes, and an nishul panel.
 
 ![116shots_so](https://github.com/user-attachments/assets/f9431912-d8c2-4877-89fe-f100b55824fd)
 
@@ -10,7 +10,7 @@ A curated platform for discovering developer and design tools with search, filte
 - Browse 30+ curated tools across categories (Development, Design, AI, Productivity)
 - Real-time search and category filtering
 - Like and save favorite tools (persists in localStorage)
-- Password-protected admin panel for managing tools
+- Password-protected nishul panel for managing tools
 - Dark/light mode with responsive design
 
 ## Quick Start
@@ -39,7 +39,7 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ```
 src/
-├── app/              # Pages (landing, feed, saves, admin)
+├── app/              # Pages (landing, feed, saves, nishul)
 ├── components/       # UI components
 ├── data/            # Static tool data
 └── lib/             # Services (auth, likes, tools)

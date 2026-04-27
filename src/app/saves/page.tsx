@@ -1,168 +1,287 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { getAllTools } from '@/lib/toolsService';
 import { getLikeCount, toggleLikeCount } from '@/lib/likeService';
-import ToolCard from '../../components/ToolsCard';
-import Sidebar from '../../components/Sidebar';
-import Navbar from '../../components/Navbar';
+import { getSaveCount } from '@/lib/saveCountService';
+import {
+  getFolders,
+  getSavedEntries,
+  getSavedToolIds,
+  createFolder,
+  renameFolder,
+  deleteFolder,
+  type Folder,
+  type SavedEntry,
+} from '@/lib/folderService';
+import ToolsCard from '@/components/ToolsCard';
+import SaveModal from '@/components/SaveModal';
+import Navbar from '@/components/Navbar';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import {
+  ArrowLeft, Plus, MoreHorizontal, Pencil, Trash2,
+  FolderOpen, Bookmark, Download, Link2, Check,
+} from 'lucide-react';
 
 export default function SavesPage() {
-    const [tools, setTools] = useState<any[]>([]);
-    const [activeCategory, setActiveCategory] = useState('All');
-    const [searchQuery, setSearchQuery] = useState('');
-    const [likedTools, setLikedTools] = useState<string[]>([]);
-    const [savedTools, setSavedTools] = useState<string[]>([]);
-    const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
-    const [isLoaded, setIsLoaded] = useState(false);
+  const [tools, setTools] = useState<any[]>([]);
+  const [folders, setFolders] = useState<Folder[]>([]);
+  const [savedEntries, setSavedEntries] = useState<SavedEntry[]>([]);
+  const [savedToolIds, setSavedToolIds] = useState<string[]>([]);
+  const [selectedFolderId, setSelectedFolderId] = useState<'all' | null | string>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [likedTools, setLikedTools] = useState<string[]>([]);
+  const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
+  const [saveCounts, setSaveCounts] = useState<Record<string, number>>({});
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [saveModal, setSaveModal] = useState<{ toolId: string; toolName: string } | null>(null);
+  const [editingFolderId, setEditingFolderId] = useState<string | null>(null);
+  const [editingName, setEditingName] = useState('');
+  const [folderMenuId, setFolderMenuId] = useState<string | null>(null);
+  const [newFolderMode, setNewFolderMode] = useState(false);
+  const [newFolderName, setNewFolderName] = useState('');
+  const [shareCopied, setShareCopied] = useState(false);
 
-    useEffect(() => {
-        const allTools = getAllTools();
-        setTools(allTools);
+  const refresh = useCallback(() => {
+    const allTools = getAllTools();
+    setTools(allTools);
+    setFolders(getFolders());
+    const entries = getSavedEntries();
+    setSavedEntries(entries);
+    setSavedToolIds(entries.map(e => e.toolId));
+    const lc: Record<string, number> = {};
+    const sc: Record<string, number> = {};
+    allTools.forEach(t => { lc[t.id] = getLikeCount(t.id); sc[t.id] = getSaveCount(t.id); });
+    setLikeCounts(lc);
+    setSaveCounts(sc);
+  }, []);
 
-        const savedLikes = localStorage.getItem('likedTools');
-        const savedSaves = localStorage.getItem('savedTools');
+  useEffect(() => {
+    refresh();
+    const savedLikes = localStorage.getItem('likedTools');
+    if (savedLikes) setLikedTools(JSON.parse(savedLikes));
+    setIsLoaded(true);
+  }, [refresh]);
 
-        if (savedLikes) setLikedTools(JSON.parse(savedLikes));
-        if (savedSaves) setSavedTools(JSON.parse(savedSaves));
+  useEffect(() => {
+    if (isLoaded) localStorage.setItem('likedTools', JSON.stringify(likedTools));
+  }, [likedTools, isLoaded]);
 
-        // Load like counts for all tools
-        const counts: Record<string, number> = {};
-        allTools.forEach(tool => {
-            counts[tool.id] = getLikeCount(tool.id);
-        });
-        setLikeCounts(counts);
+  const toggleLike = (id: string) => {
+    const isCurrentlyLiked = likedTools.includes(id);
+    const newCount = toggleLikeCount(id, isCurrentlyLiked);
+    setLikeCounts(prev => ({ ...prev, [id]: newCount }));
+    setLikedTools(prev => isCurrentlyLiked ? prev.filter(t => t !== id) : [...prev, id]);
+  };
 
-        setIsLoaded(true);
-    }, []);
+  const handleSave = (id: string) => {
+    const tool = tools.find(t => t.id === id);
+    setSaveModal({ toolId: id, toolName: tool?.title ?? '' });
+  };
 
-    useEffect(() => {
-        if (isLoaded) {
-            localStorage.setItem('likedTools', JSON.stringify(likedTools));
-        }
-    }, [likedTools, isLoaded]);
+  const handleModalClose = () => { refresh(); setSaveModal(null); };
 
-    useEffect(() => {
-        if (isLoaded) {
-            localStorage.setItem('savedTools', JSON.stringify(savedTools));
-        }
-    }, [savedTools, isLoaded]);
+  const handleCreateFolder = () => {
+    if (!newFolderName.trim()) return;
+    createFolder(newFolderName.trim());
+    setNewFolderName(''); setNewFolderMode(false); refresh();
+  };
 
-    const toggleLike = (id: string) => {
-        const isCurrentlyLiked = likedTools.includes(id);
+  const handleRenameFolder = (id: string) => {
+    if (editingName.trim()) renameFolder(id, editingName.trim());
+    setEditingFolderId(null); setEditingName(''); refresh();
+  };
 
-        // Update like count
-        const newCount = toggleLikeCount(id, isCurrentlyLiked);
-        setLikeCounts(prev => ({ ...prev, [id]: newCount }));
+  const handleDeleteFolder = (id: string) => {
+    deleteFolder(id);
+    if (selectedFolderId === id) setSelectedFolderId('all');
+    refresh();
+  };
 
-        // Update liked tools list
-        setLikedTools(prev =>
-            isCurrentlyLiked ? prev.filter(toolId => toolId !== id) : [...prev, id]
-        );
+  const handleExport = () => {
+    const allTools = getAllTools();
+    const toolMap = Object.fromEntries(allTools.map(t => [t.id, t]));
+    const folderMap = Object.fromEntries(getFolders().map(f => [f.id, f]));
+    const entries = getSavedEntries();
+
+    const grouped: Record<string, string[]> = { Unsorted: [] };
+    getFolders().forEach(f => { grouped[f.name] = []; });
+
+    entries.forEach(e => {
+      const t = toolMap[e.toolId];
+      if (!t) return;
+      const line = `- [${t.title}](${t.link})${t.pricing ? ` — ${t.pricing}` : ''}`;
+      const folderName = e.folderId ? folderMap[e.folderId]?.name : null;
+      if (folderName) grouped[folderName] = [...(grouped[folderName] ?? []), line];
+      else grouped['Unsorted'].push(line);
+    });
+
+    const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const lines = [`# My Saved Tools\n_Exported from ToolScrolling on ${date}_\n`];
+    Object.entries(grouped).forEach(([name, items]) => {
+      if (items.length === 0) return;
+      lines.push(`\n## ${name}\n${items.join('\n')}`);
+    });
+
+    const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'saved-tools.md';
+    a.click(); URL.revokeObjectURL(url);
+  };
+
+  const handleShare = () => {
+    const payload = {
+      folders: getFolders().map(f => ({ id: f.id, name: f.name })),
+      entries: getSavedEntries().map(e => ({ toolId: e.toolId, folderId: e.folderId })),
     };
+    const encoded = btoa(JSON.stringify(payload));
+    const url = `${window.location.origin}/shared?data=${encoded}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setShareCopied(true);
+      setTimeout(() => setShareCopied(false), 2000);
+    });
+  };
 
-    const toggleSave = (id: string) => {
-        setSavedTools(prev =>
-            prev.includes(id) ? prev.filter(toolId => toolId !== id) : [...prev, id]
-        );
-    };
+  const unsortedCount = useMemo(() => savedEntries.filter(e => !e.folderId).length, [savedEntries]);
 
-    const categories = ['All', ...Array.from(new Set(tools.map(tool => tool.category)))];
+  const displayedToolIds = useMemo(() => {
+    if (selectedFolderId === 'all') return savedEntries.map(e => e.toolId);
+    if (selectedFolderId === null) return savedEntries.filter(e => !e.folderId).map(e => e.toolId);
+    return savedEntries.filter(e => e.folderId === selectedFolderId).map(e => e.toolId);
+  }, [selectedFolderId, savedEntries]);
 
-    // Filter only saved tools
-    const savedToolsList = tools
-        .filter(tool => savedTools.includes(tool.id))
-        .filter(tool => {
-            const matchesSearch = tool.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                tool.description.toLowerCase().includes(searchQuery.toLowerCase());
-            return matchesSearch;
-        })
-        .map(tool => ({
-            ...tool,
-            isLiked: likedTools.includes(tool.id),
-            isSaved: true,
-            totalLikes: likeCounts[tool.id] || 0
-        }));
+  const displayedTools = useMemo(() =>
+    tools
+      .filter(t => displayedToolIds.includes(t.id))
+      .filter(t => {
+        if (!searchQuery) return true;
+        return t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          t.description.toLowerCase().includes(searchQuery.toLowerCase());
+      })
+      .map(t => ({ ...t, isLiked: likedTools.includes(t.id), isSaved: true, totalLikes: likeCounts[t.id] ?? 0, saves: saveCounts[t.id] ?? 0 })),
+    [tools, displayedToolIds, searchQuery, likedTools, likeCounts, saveCounts]
+  );
 
-    return (
-        <div className="flex min-h-screen bg-gray-50 dark:bg-black font-sans text-gray-900 dark:text-gray-100">
-            <Sidebar
-                categories={categories}
-                selectedCategory={activeCategory}
-                onSelectCategory={(cat) => {
-                    // If user clicks a category in sidebar on saves page, 
-                    // maybe redirect to home with that filter? 
-                    // For now, let's keep it simple or just make sidebar links work 
-                    // properly if we convert them to configured links.
-                    // Since Sidebar uses buttons, we might want to refactor Sidebar 
-                    // to use Links or handle navigation.
-                    // For this minimal page, I'll just render Sidebar for visual consistency
-                    // but maybe we should disable category clicking or handle it.
-                    // I'll make it redirect to home
-                    window.location.href = `/?category=${cat}`;
-                }}
-            />
+  return (
+    <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950 font-sans text-slate-900 dark:text-slate-100">
+      <Navbar searchQuery={searchQuery} onSearchChange={setSearchQuery} savedCount={savedToolIds.length} />
 
-            <div className="flex-1 flex flex-col min-h-screen w-full">
-                <Navbar
-                    searchQuery={searchQuery}
-                    onSearchChange={setSearchQuery}
-                    likedCount={likedTools.length}
-                    savedCount={savedTools.length}
-                />
-
-                <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
-                    <div className="max-w-7xl mx-auto">
-                        <div className="mb-8 flex items-center space-x-4">
-                            <Link href="/" className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                                <ArrowLeft size={24} className="text-gray-600 dark:text-gray-400" />
-                            </Link>
-                            <div>
-                                <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400">
-                                    Saved Tools
-                                </h2>
-                                <p className="text-gray-500 dark:text-gray-400 mt-1">
-                                    Your personal collection
-                                </p>
-                            </div>
-                        </div>
-
-                        {savedToolsList.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                                {savedToolsList.map(tool => (
-                                    <ToolCard
-                                        key={tool.id}
-                                        tool={tool}
-                                        isLiked={tool.isLiked}
-                                        isSaved={tool.isSaved}
-                                        likesCount={tool.totalLikes}
-                                        onToggleLike={toggleLike}
-                                        onToggleSave={toggleSave}
-                                    />
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="flex flex-col items-center justify-center py-20 text-center min-h-[50vh]">
-                                <div className="bg-gray-100 dark:bg-gray-800 rounded-full p-8 mb-6">
-                                    <span className="text-5xl">🔖</span>
-                                </div>
-                                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">No saved tools yet</h3>
-                                <p className="text-gray-500 dark:text-gray-400 max-w-sm mx-auto mb-8">
-                                    Start exploring and save your favorite tools to access them quickly here.
-                                </p>
-                                <Link
-                                    href="/"
-                                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 hover:-translate-y-1"
-                                >
-                                    Explore Tools
-                                </Link>
-                            </div>
-                        )}
-                    </div>
-                </main>
+      <main className="flex-1 px-4 sm:px-6 lg:px-8 py-8 max-w-400 mx-auto w-full">
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-8">
+          <Link href="/feed" className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+            <ArrowLeft size={18} />
+          </Link>
+          <div className="flex-1">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Your Library</h1>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+              {savedToolIds.length} saved tool{savedToolIds.length !== 1 ? 's' : ''}
+            </p>
+          </div>
+          {savedToolIds.length > 0 && (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleShare}
+                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
+              >
+                {shareCopied ? <Check size={14} className="text-emerald-500" /> : <Link2 size={14} />}
+                {shareCopied ? 'Copied!' : 'Share'}
+              </button>
+              <button
+                onClick={handleExport}
+                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
+              >
+                <Download size={14} /> Export .md
+              </button>
             </div>
+          )}
         </div>
-    );
+
+        {/* Folder strip */}
+        <div className="flex items-center gap-2 flex-wrap mb-7">
+          <button
+            onClick={() => setSelectedFolderId('all')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${selectedFolderId === 'all' ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'}`}
+          >
+            <Bookmark size={12} /> All
+            <span className="text-xs opacity-60">({savedToolIds.length})</span>
+          </button>
+
+          {folders.map(folder => {
+            const count = savedEntries.filter(e => e.folderId === folder.id).length;
+            const isActive = selectedFolderId === folder.id;
+            if (editingFolderId === folder.id) {
+              return (
+                <div key={folder.id} className="flex items-center gap-1.5">
+                  <input autoFocus type="text" value={editingName} onChange={e => setEditingName(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') handleRenameFolder(folder.id); if (e.key === 'Escape') { setEditingFolderId(null); setEditingName(''); } }} onBlur={() => handleRenameFolder(folder.id)} className="px-2 py-1 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-slate-400 w-28" />
+                </div>
+              );
+            }
+            return (
+              <div key={folder.id} className="relative group/tab">
+                <button onClick={() => setSelectedFolderId(folder.id)} className={`flex items-center gap-1.5 pl-3 pr-6 py-1.5 rounded-full text-sm font-medium transition-colors ${isActive ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'}`}>
+                  <FolderOpen size={12} /> {folder.name}
+                  <span className="text-xs opacity-60">({count})</span>
+                </button>
+                <button onClick={e => { e.stopPropagation(); setFolderMenuId(folderMenuId === folder.id ? null : folder.id); }} className="absolute right-1.5 top-1/2 -translate-y-1/2 p-0.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 opacity-0 group-hover/tab:opacity-100 transition-opacity">
+                  <MoreHorizontal size={12} />
+                </button>
+                {folderMenuId === folder.id && (
+                  <div className="absolute top-9 left-0 z-20 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-lg py-1 w-36">
+                    <button onClick={() => { setEditingFolderId(folder.id); setEditingName(folder.name); setFolderMenuId(null); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"><Pencil size={13} /> Rename</button>
+                    <button onClick={() => { handleDeleteFolder(folder.id); setFolderMenuId(null); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors"><Trash2 size={13} /> Delete</button>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          {unsortedCount > 0 && (
+            <button onClick={() => setSelectedFolderId(null)} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${selectedFolderId === null ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'}`}>
+              Unsorted <span className="text-xs opacity-60">({unsortedCount})</span>
+            </button>
+          )}
+
+          {newFolderMode ? (
+            <div className="flex items-center gap-1.5">
+              <input autoFocus type="text" value={newFolderName} onChange={e => setNewFolderName(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') handleCreateFolder(); if (e.key === 'Escape') { setNewFolderMode(false); setNewFolderName(''); } }} onBlur={() => { if (!newFolderName.trim()) setNewFolderMode(false); }} placeholder="Folder name…" className="px-2 py-1 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-slate-400 w-32" />
+              <button onClick={handleCreateFolder} disabled={!newFolderName.trim()} className="px-2.5 py-1 text-xs bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-lg font-medium disabled:opacity-40 hover:opacity-90 transition-opacity">Create</button>
+            </div>
+          ) : (
+            <button onClick={() => setNewFolderMode(true)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-dashed border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 transition-colors">
+              <Plus size={12} /> New folder
+            </button>
+          )}
+        </div>
+
+        {/* Grid */}
+        {displayedTools.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
+            {displayedTools.map(tool => (
+              <ToolsCard key={tool.id} tool={tool} isLiked={tool.isLiked} isSaved={true} likesCount={tool.totalLikes} saveCount={tool.saves} onToggleLike={toggleLike} onToggleSave={handleSave} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-24 text-center">
+            <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center mb-4">
+              <Bookmark className="w-7 h-7 text-slate-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-1">
+              {savedToolIds.length === 0 ? 'No saved tools yet' : 'Nothing here'}
+            </h3>
+            <p className="text-slate-500 dark:text-slate-400 max-w-xs text-sm mb-6">
+              {savedToolIds.length === 0 ? 'Head to the feed and bookmark tools you love.' : 'Save tools to this folder from the feed.'}
+            </p>
+            <Link href="/feed" className="px-5 py-2.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity">
+              Explore Feed
+            </Link>
+          </div>
+        )}
+      </main>
+
+      {saveModal && <SaveModal toolId={saveModal.toolId} toolName={saveModal.toolName} onClose={handleModalClose} />}
+      {folderMenuId && <div className="fixed inset-0 z-10" onClick={() => setFolderMenuId(null)} />}
+    </div>
+  );
 }

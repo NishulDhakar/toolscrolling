@@ -4,13 +4,13 @@ export interface Tool {
   description: string;
   image: string;
   link: string;
-  category: 'Development' | 'Design' | 'Productivity' | 'AI' | 'Other';
-  initialLikes?: number; // Deprecated: kept for backward compatibility with existing data
+  category: string;
+  pricing?: 'Free' | 'Freemium' | 'Paid';
+  tags?: string[];
+  initialLikes?: number;
 }
 
-
 export const tools: Tool[] = [
-  // Originally added
   {
     id: '1',
     title: 'VS Code',
@@ -18,6 +18,8 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/2048px-Visual_Studio_Code_1.35_icon.svg.png',
     link: 'https://code.visualstudio.com/',
     category: 'Development',
+    pricing: 'Free',
+    tags: ['editor', 'ide', 'open-source', 'microsoft'],
     initialLikes: 1250,
   },
   {
@@ -27,6 +29,8 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg',
     link: 'https://www.figma.com/',
     category: 'Design',
+    pricing: 'Freemium',
+    tags: ['ui', 'prototyping', 'collaboration', 'vector'],
     initialLikes: 980,
   },
   {
@@ -36,6 +40,8 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg',
     link: 'https://chat.openai.com/',
     category: 'AI',
+    pricing: 'Freemium',
+    tags: ['llm', 'chatbot', 'openai', 'writing'],
     initialLikes: 2500,
   },
   {
@@ -45,15 +51,19 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg',
     link: 'https://tailwindcss.com/',
     category: 'Development',
+    pricing: 'Free',
+    tags: ['css', 'framework', 'open-source', 'styling'],
     initialLikes: 850,
   },
   {
     id: '5',
     title: 'Canva',
-    description: 'A graphic design platform that allows users to create social media graphics, presentations, posters, documents and other visual content.',
+    description: 'A graphic design platform for creating social media graphics, presentations, and visual content.',
     image: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg',
     link: 'https://www.canva.com/',
     category: 'Design',
+    pricing: 'Freemium',
+    tags: ['graphics', 'templates', 'social-media', 'no-code'],
     initialLikes: 1100,
   },
   {
@@ -63,15 +73,19 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png',
     link: 'https://www.notion.so/',
     category: 'Productivity',
+    pricing: 'Freemium',
+    tags: ['notes', 'wiki', 'collaboration', 'database'],
     initialLikes: 1400,
   },
   {
     id: '7',
     title: 'Midjourney',
-    description: 'An independent research lab exploring new mediums of thought and expanding the imaginative powers of the human species.',
+    description: 'AI image generation that expands the imaginative powers of the human species.',
     image: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Midjourney_Emblem.png',
     link: 'https://www.midjourney.com/',
     category: 'AI',
+    pricing: 'Paid',
+    tags: ['image-generation', 'art', 'generative-ai'],
     initialLikes: 1800,
   },
   {
@@ -81,30 +95,32 @@ export const tools: Tool[] = [
     image: 'https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png',
     link: 'https://vercel.com/',
     category: 'Development',
+    pricing: 'Freemium',
+    tags: ['deployment', 'hosting', 'serverless', 'ci-cd'],
     initialLikes: 920,
   },
   {
     id: '9',
     title: 'Dribbble',
-    description: 'The leading destination to find & showcase creative work and home to the world\'s best design professionals.',
+    description: 'The leading destination to find and showcase creative work.',
     image: 'https://cdn.freebiesupply.com/logos/large/2x/dribbble-icon-1-logo-png-transparent.png',
     link: 'https://dribbble.com/',
     category: 'Design',
+    pricing: 'Freemium',
+    tags: ['portfolio', 'inspiration', 'community', 'ui'],
     initialLikes: 750,
   },
   {
     id: '10',
     title: 'Linear',
-    description: 'The issue tracking tool you\'ll enjoy using.',
+    description: "The issue tracking tool you'll enjoy using.",
     image: 'https://upload.wikimedia.org/wikipedia/commons/e/e6/Linear_logo.svg',
     link: 'https://linear.app/',
     category: 'Productivity',
+    pricing: 'Freemium',
+    tags: ['issue-tracking', 'project-management', 'agile'],
     initialLikes: 600,
   },
-
-  // New Additions
-
-  // Development Frameworks & Libraries
   {
     id: '11',
     title: 'React',
@@ -112,6 +128,8 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg',
     link: 'https://react.dev/',
     category: 'Development',
+    pricing: 'Free',
+    tags: ['javascript', 'framework', 'open-source', 'meta'],
     initialLikes: 2100,
   },
   {
@@ -121,15 +139,19 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg',
     link: 'https://vuejs.org/',
     category: 'Development',
+    pricing: 'Free',
+    tags: ['javascript', 'framework', 'open-source', 'progressive'],
     initialLikes: 1750,
   },
   {
     id: '13',
     title: 'Angular',
-    description: 'The modern web developer\'s platform.',
+    description: "The modern web developer's platform.",
     image: 'https://upload.wikimedia.org/wikipedia/commons/c/cf/Angular_full_color_logo.svg',
     link: 'https://angular.io/',
     category: 'Development',
+    pricing: 'Free',
+    tags: ['javascript', 'typescript', 'framework', 'google'],
     initialLikes: 1600,
   },
   {
@@ -139,6 +161,8 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/1/1b/Svelte_Logo.svg',
     link: 'https://svelte.dev/',
     category: 'Development',
+    pricing: 'Free',
+    tags: ['javascript', 'framework', 'open-source', 'compiler'],
     initialLikes: 1450,
   },
   {
@@ -148,6 +172,8 @@ export const tools: Tool[] = [
     image: 'https://assets.vercel.com/image/upload/v1662130559/nextjs/Icon_light_background.png',
     link: 'https://nextjs.org/',
     category: 'Development',
+    pricing: 'Free',
+    tags: ['react', 'ssr', 'full-stack', 'vercel'],
     initialLikes: 2000,
   },
   {
@@ -157,10 +183,10 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/b/b2/Bootstrap_logo.svg',
     link: 'https://getbootstrap.com/',
     category: 'Development',
+    pricing: 'Free',
+    tags: ['css', 'framework', 'responsive', 'open-source'],
     initialLikes: 1300,
   },
-
-  // Design & Prototyping
   {
     id: '17',
     title: 'Sketch',
@@ -168,6 +194,8 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/5/59/Sketch_Logo.svg',
     link: 'https://www.sketch.com/',
     category: 'Design',
+    pricing: 'Paid',
+    tags: ['ui', 'prototyping', 'mac', 'vector'],
     initialLikes: 890,
   },
   {
@@ -177,19 +205,10 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/c/c2/Adobe_XD_CC_icon.svg',
     link: 'https://helpx.adobe.com/support/xd.html',
     category: 'Design',
+    pricing: 'Freemium',
+    tags: ['ui', 'prototyping', 'adobe', 'wireframing'],
     initialLikes: 780,
   },
-  {
-    id: '19',
-    title: 'InVision',
-    description: ' The digital product design platform.',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/8/86/InVision_logo.svg',
-    link: 'https://www.invisionapp.com/',
-    category: 'Design',
-    initialLikes: 650,
-  },
-
-  // Developer Tools & IDEs
   {
     id: '20',
     title: 'Sublime Text',
@@ -197,6 +216,8 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/7/75/Sublime_Text_Logo.svg',
     link: 'https://www.sublimetext.com/',
     category: 'Development',
+    pricing: 'Freemium',
+    tags: ['editor', 'lightweight', 'fast'],
     initialLikes: 1150,
   },
   {
@@ -206,6 +227,8 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/4/4e/Docker_%28container_engine%29_logo.svg',
     link: 'https://www.docker.com/',
     category: 'Development',
+    pricing: 'Freemium',
+    tags: ['containers', 'devops', 'open-source', 'virtualization'],
     initialLikes: 1950,
   },
   {
@@ -215,6 +238,8 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/3/39/Kubernetes_logo_without_workmark.svg',
     link: 'https://kubernetes.io/',
     category: 'Development',
+    pricing: 'Free',
+    tags: ['containers', 'devops', 'orchestration', 'open-source'],
     initialLikes: 1850,
   },
   {
@@ -224,10 +249,10 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/c/c2/Postman_%28software%29.png',
     link: 'https://www.postman.com/',
     category: 'Development',
+    pricing: 'Freemium',
+    tags: ['api', 'testing', 'rest', 'http'],
     initialLikes: 1420,
   },
-
-  // Productivity & Collaboration
   {
     id: '24',
     title: 'Slack',
@@ -235,6 +260,8 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/d/d5/Slack_icon_2019.svg',
     link: 'https://slack.com/',
     category: 'Productivity',
+    pricing: 'Freemium',
+    tags: ['messaging', 'team', 'collaboration', 'communication'],
     initialLikes: 1600,
   },
   {
@@ -244,6 +271,8 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/7/7a/Trello-logo-blue.svg',
     link: 'https://trello.com/',
     category: 'Productivity',
+    pricing: 'Freemium',
+    tags: ['kanban', 'project-management', 'cards', 'atlassian'],
     initialLikes: 980,
   },
   {
@@ -253,10 +282,10 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/8/8a/Jira_Logo.svg',
     link: 'https://www.atlassian.com/software/jira',
     category: 'Productivity',
+    pricing: 'Freemium',
+    tags: ['issue-tracking', 'agile', 'scrum', 'atlassian'],
     initialLikes: 1350,
   },
-
-  // AI & Testing
   {
     id: '27',
     title: 'GitHub Copilot',
@@ -264,15 +293,19 @@ export const tools: Tool[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/2/29/GitHub_Copilot_logo.svg',
     link: 'https://github.com/features/copilot',
     category: 'AI',
+    pricing: 'Freemium',
+    tags: ['ai', 'code-completion', 'github', 'llm'],
     initialLikes: 2200,
   },
   {
     id: '28',
     title: 'Selenium',
-    description: 'Automates browsers. That\'s it!',
+    description: "Automates browsers. That's it!",
     image: 'https://upload.wikimedia.org/wikipedia/commons/d/d5/Selenium_Logo.png',
     link: 'https://www.selenium.dev/',
     category: 'Development',
+    pricing: 'Free',
+    tags: ['testing', 'automation', 'browser', 'open-source'],
     initialLikes: 820,
   },
   {
@@ -282,15 +315,19 @@ export const tools: Tool[] = [
     image: 'https://jestjs.io/img/jest.png',
     link: 'https://jestjs.io/',
     category: 'Development',
+    pricing: 'Free',
+    tags: ['testing', 'javascript', 'open-source', 'meta'],
     initialLikes: 1050,
   },
   {
     id: '30',
     title: 'Cypress',
     description: 'Fast, easy and reliable testing for anything that runs in a browser.',
-    image: 'https://assets.stickpng.com/images/5847f40ecef1014c0b5e488a.png', // Fallback or clearbit might work better but this is common
+    image: 'https://assets.stickpng.com/images/5847f40ecef1014c0b5e488a.png',
     link: 'https://www.cypress.io/',
     category: 'Development',
+    pricing: 'Freemium',
+    tags: ['testing', 'e2e', 'browser', 'javascript'],
     initialLikes: 1180,
-  }
+  },
 ];

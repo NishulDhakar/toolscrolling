@@ -4,39 +4,35 @@ import { useState } from "react"
 import Link from "next/link"
 import { Menu, X } from "lucide-react"
 import LightPillar from "@/components/LightPillar"
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button"
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
     <div className="relative min-h-screen text-slate-900 dark:text-slate-50 transition-colors duration-300 overflow-hidden">
-      {/* Background Light Pillar */}
-      <div className="pointer-events-none absolute top-0 left-0 w-full h-screen -z-10">
-        <LightPillar
-          topColor="#5227FF"
-          bottomColor="#FF9FFC"
-          intensity={1}
-          rotationSpeed={0.8}
-          glowAmount={0.002}
-          pillarWidth={3}
-          pillarHeight={0.4}
-          noiseIntensity={0.5}
-          pillarRotation={25}
-          interactive={false}
-          mixBlendMode="screen"
-          quality="high"
-        />
-      </div>
+                   <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="none"
+        className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+        src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31.mp4"
+      />
+
+      {/* Dark overlay so text is always legible over the video */}
+      {/* <div className="absolute inset-0 z-1 bg-black/55" /> */}
 
       {/* Hero Section */}
-      <main className="flex flex-col items-center justify-center min-h-screen px-4">
+      <main className="relative z-2 flex flex-col items-center py-30 min-h-screen px-4">
         <div className="max-w-3xl mx-auto text-center space-y-8">
-          <h1 className="text-5xl font-serif md:text-8xl font-bold tracking-tight text-slate-100 dark:text-white leading-[1.1]">
+          <h1 className="text-5xl font-serif md:text-7xl font-bold tracking-tight text-slate-100 dark:text-white leading-[1.1]">
             Your Tools,<br />
             <span className="text-slate-100">finally organized.</span>
           </h1>
 
-          <p className="text-lg md:text-xl text-slate-100 max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="text-lg md:text-xl text-slate-100 max-w-xl mx-auto font-light leading-relaxed">
             Discover, organize, and use the best tools on the web all in one focused workspace.
           </p>
 
@@ -44,29 +40,18 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Link href="/feed" className="relative group">
               {/* Glow */}
-              <span
+              {/* <span
                 className="
                   absolute inset-0 rounded-full
                   bg-gradient-to-r from-[#5227FF]/40 to-[#FF9FFC]/40
                   blur-lg opacity-60
                   group-hover:opacity-90 transition
                 "
-              />
+              /> */}
 
-              {/* Glass Button */}
-              <span
-                className="
-                  relative px-30 py-4 rounded-full text-md font-bold
-                  text-white backdrop-blur-xl
-                  bg-white/5 border border-white/20
-                  shadow-[0_8px_32px_rgba(0,0,0,0.25)]
-                  transition-all duration-300
-                  hover:bg-white/10
-                  active:scale-[0.97]
-                "
-              >
-                Explore Tool Feed
-              </span>
+           <InteractiveHoverButton>
+                Explore Tools
+           </InteractiveHoverButton>
             </Link>
           </div>
         </div>

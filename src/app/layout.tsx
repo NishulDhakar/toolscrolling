@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import GlobalShell from "@/components/GlobalShell";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -34,7 +35,7 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
 
-        {children}
+        <GlobalShell>{children}</GlobalShell>
       </body>
     </html>
   );
