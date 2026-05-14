@@ -38,7 +38,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       case 'No-Code': return <Layers {...p} />;
       case 'APIs & Integrations': return <Link2 {...p} />;
       case 'Finance & Billing': return <CreditCard {...p} />;
-      case 'SaaS Launch Platforms': return <Rocket {...p} />;
+      case 'SaaS Launch Platforms & Directories': return <Rocket {...p} />;
       default: return <Folder {...p} />;
     }
   };
