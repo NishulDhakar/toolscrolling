@@ -19,6 +19,17 @@ export const metadata: Metadata = {
   description: "A curated list of developer tools, UI libraries, and AI resources.",
 };
 
+const themeScript = `
+  (function() {
+    try {
+      const stored = localStorage.getItem(’theme’);
+      const systemDark = window.matchMedia(’(prefers-color-scheme: dark)’).matches;
+      const theme = stored ? stored : (systemDark ? ‘dark’ : ‘light’);
+      document.documentElement.setAttribute(’data-theme’, theme);
+    } catch (e) {}
+  })();
+`;
+
 export default function RootLayout({
   children,
 }: {
@@ -26,6 +37,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased relative overflow-x-hidden`}
       >
