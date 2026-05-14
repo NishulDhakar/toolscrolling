@@ -21,7 +21,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   streak = 0,
 }) => {
   const DISPLAY_NAMES: Record<string, string> = {
-    'SaaS Launch Platforms': 'Marketing',
+    'Marketing & Directories': 'Marketing',
   };
 
   const getDisplayName = (category: string) => DISPLAY_NAMES[category] ?? category;
@@ -38,7 +38,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       case 'No-Code': return <Layers {...p} />;
       case 'APIs & Integrations': return <Link2 {...p} />;
       case 'Finance & Billing': return <CreditCard {...p} />;
-      case 'SaaS Launch Platforms & Directories': return <Rocket {...p} />;
+      case 'Marketing & Directories': return <Rocket {...p} />;
       default: return <Folder {...p} />;
     }
   };

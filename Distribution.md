@@ -1,4 +1,4 @@
-# SaaS Launch Platforms
+# Marketing
 
 ## Tier 1: The Big Launchers
 - [Product Hunt](https://www.producthunt.com)
