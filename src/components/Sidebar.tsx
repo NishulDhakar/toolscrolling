@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutGrid, Code, PenTool, Brain, Sparkles, Folder, Bookmark, X, Flame, Plus } from 'lucide-react';
+import { LayoutGrid, Code, PenTool, Brain, Sparkles, Folder, Bookmark, X, Flame, Plus, Server, Layers, Link2, CreditCard, Rocket, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -20,14 +20,25 @@ const Sidebar: React.FC<SidebarProps> = ({
   onClose,
   streak = 0,
 }) => {
+  const DISPLAY_NAMES: Record<string, string> = {
+    'SaaS Launch Platforms': 'Marketing',
+  };
+
+  const getDisplayName = (category: string) => DISPLAY_NAMES[category] ?? category;
+
   const getIcon = (category: string) => {
     const p = { size: 17 };
     switch (category) {
       case 'All': return <LayoutGrid {...p} />;
       case 'Development': return <Code {...p} />;
-      case 'Design': return <PenTool {...p} />;
+      case 'Design & UI': return <PenTool {...p} />;
       case 'AI': return <Brain {...p} />;
       case 'Productivity': return <Sparkles {...p} />;
+      case 'DevOps & Infra': return <Server {...p} />;
+      case 'No-Code': return <Layers {...p} />;
+      case 'APIs & Integrations': return <Link2 {...p} />;
+      case 'Finance & Billing': return <CreditCard {...p} />;
+      case 'SaaS Launch Platforms': return <Rocket {...p} />;
       default: return <Folder {...p} />;
     }
   };
@@ -90,7 +101,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   <span className={isActive ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500'}>
                     {getIcon(category)}
                   </span>
-                  <span className="flex-1 text-left">{category}</span>
+                  <span className="flex-1 text-left">{getDisplayName(category)}</span>
                 </button>
               );
             })}
@@ -115,11 +126,18 @@ const Sidebar: React.FC<SidebarProps> = ({
               <Plus size={17} className="text-slate-400 dark:text-slate-500" />
               Submit a Tool
             </Link>
+                        <Link
+              href="https://www.instagram.com/toolscrolling" target="_blank"              rel="noopener noreferrer"
+              className="w-full flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors"
+            >
+              <Instagram size={17} className="text-slate-400 dark:text-slate-500" />
+              Follow on Instagram
+            </Link>
           </div>
         </div>
 
         {/* Footer — streak */}
-        <div className="p-3 border-t border-slate-200 dark:border-slate-800">
+        {/* <div className="p-3 border-t border-slate-200 dark:border-slate-800">
           {streak > 0 ? (
             <div className="flex items-center gap-2.5 px-2 py-2 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/40">
               <Flame size={16} className="text-amber-500 shrink-0" />
@@ -141,7 +159,8 @@ const Sidebar: React.FC<SidebarProps> = ({
               </div>
             </div>
           )}
-        </div>
+        </div> */}
+    
       </aside>
     </>
   );

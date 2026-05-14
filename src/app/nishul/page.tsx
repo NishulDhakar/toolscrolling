@@ -40,7 +40,7 @@ export default function nishulPage() {
         }
     };
 
-    const categories = ['All', 'Development', 'Design', 'Productivity', 'AI', 'Other'];
+    const categories = ['All', 'Development', 'Design', 'SEO', 'Productivity', 'AI', 'Other'];
 
     const filteredTools = tools.filter(tool => {
         const matchesCategory = filterCategory === 'All' || tool.category === filterCategory;

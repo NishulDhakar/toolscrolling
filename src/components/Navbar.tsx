@@ -68,13 +68,13 @@ const Navbar: React.FC<NavbarProps> = ({
             </button>
 
             {/* Blog */}
-            <Link
+            {/* <Link
               href="/blog"
               className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors border border-slate-200 dark:border-slate-700"
             >
               <BookOpen size={13} />
               <span className="hidden md:inline">Blog</span>
-            </Link>
+            </Link> */}
 
             {/* Submit */}
             <Link

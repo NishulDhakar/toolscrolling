@@ -79,9 +79,9 @@ export default function ToolsCard({
 
           {/* Badges */}
           <div className="flex flex-col items-end gap-1">
-            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+            {/* <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
               {tool.category}
-            </span>
+            </span> */}
             {tool.pricing && (
               <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${PRICING_STYLES[tool.pricing] ?? ''}`}>
                 {tool.pricing}

@@ -1,6 +1,6 @@
 const KEY = 'customCategories';
 
-export const DEFAULT_CATEGORIES = ['Development', 'Design', 'Productivity', 'AI', 'Other'];
+export const DEFAULT_CATEGORIES = ['Design', 'Development', 'SEO', 'Productivity', 'AI', 'Other'];
 
 function getCustomOnly(): string[] {
   if (typeof window === 'undefined') return [];

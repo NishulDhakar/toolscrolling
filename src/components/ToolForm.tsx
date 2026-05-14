@@ -14,7 +14,7 @@ interface ToolFormProps {
 
 type FetchState = 'idle' | 'loading' | 'done' | 'error';
 
-const CATEGORIES = ['Development', 'Design', 'Productivity', 'AI', 'Other'] as const;
+const CATEGORIES = ['Design' ,'Development', 'SEO', 'Productivity', 'AI', 'Other'] as const;
 const PRICING_OPTIONS = ['Free', 'Freemium', 'Paid'] as const;
 
 export default function ToolForm({ initialData, onSubmit, onCancel, submitLabel = 'Submit' }: ToolFormProps) {
