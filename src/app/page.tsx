@@ -49,7 +49,7 @@ export default function LandingPage() {
                 "
               /> */}
 
-           <InteractiveHoverButton>
+           <InteractiveHoverButton >
                 Explore Tools
            </InteractiveHoverButton>
             </Link>
