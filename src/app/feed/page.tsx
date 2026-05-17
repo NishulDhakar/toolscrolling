@@ -30,6 +30,7 @@ const CATEGORY_ORDER = [
   'Design',
   'UI Libraries',
   'Development',
+  'SEO',
   'Marketing',
   'Content creation',
   'Productivity',
