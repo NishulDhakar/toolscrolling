@@ -26,6 +26,16 @@ const PRICING_STYLES: Record<string, string> = {
   Paid: 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400',
 };
 
+const CATEGORY_ORDER = [
+  'Design',
+  'UI Libraries',
+  'Development',
+  'Marketing',
+  'Content creation',
+  'Productivity',
+  'No-Code'
+];
+
 export default function FeedPage() {
   const router = useRouter();
   const [tools, setTools] = useState<CustomTool[]>([]);
@@ -105,7 +115,16 @@ export default function FeedPage() {
     setTodayDismissed(true);
   };
 
-  const categories = ['All', ...Array.from(new Set(tools.map(t => t.category)))];
+  const extractedCategories = Array.from(new Set(tools.map(t => t.category)));
+  const sortedCategories = extractedCategories.sort((a, b) => {
+    const indexA = CATEGORY_ORDER.indexOf(a);
+    const indexB = CATEGORY_ORDER.indexOf(b);
+    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+    if (indexA !== -1) return -1;
+    if (indexB !== -1) return 1;
+    return a.localeCompare(b);
+  });
+  const categories = ['All', ...sortedCategories];
   const toolOfDay = getToolOfDay(tools);
 
   const filteredTools = tools

@@ -18,7 +18,7 @@
 - [Mercurial](https://www.mercurial-scm.org/)
 - [Helix Core](https://www.perforce.com/products/helix-core)
 
-## Design Tools
+## Design
 - [Figma](https://figma.com)
 - [Sketch](https://sketch.com)
 - [Adobe XD](https://adobe.com/products/xd)
@@ -183,6 +183,7 @@
 - [Sora (OpenAI)](https://sora.com)
 - [Canva](https://canva.com)
 - [Midjourney](https://midjourney.com)
+- [Stable Diffusion](https://stability.ai/)
 - [Adobe Firefly](https://firefly.adobe.com)
 - [DALL-E (ChatGPT)](https://openai.com/dall-e-3)
 - [Leonardo AI](https://leonardo.ai)
